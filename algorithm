@@ -1,0 +1,52 @@
+using System;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.UI;
+
+namespace SeleniumAutomation
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            IWebDriver driver = new ChromeDriver();
+            driver.Navigate().GoToUrl("https://app.cloudqa.io/home/AutomationPracticeForm");
+
+            try
+            {
+                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+
+                IWebElement firstNameField = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("input[id='firstName']")));
+                IWebElement lastNameField = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("input[id='lastName']")));
+                IWebElement emailField = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector("input[id='userEmail']")));
+
+                string firstName = "Rahul";
+                string lastName = "Kumar";
+                string email = "rahulkumar@example.com";
+
+                firstNameField.SendKeys(firstName);
+                lastNameField.SendKeys(lastName);
+                emailField.SendKeys(email);
+
+                if (firstNameField.GetAttribute("value") == firstName &&
+                    lastNameField.GetAttribute("value") == lastName &&
+                    emailField.GetAttribute("value") == email)
+                {
+                    Console.WriteLine("Field values entered and validated successfully.");
+                }
+                else
+                {
+                    Console.WriteLine("Field values validation failed.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("An error occurred: " + ex.Message);
+            }
+            finally
+            {
+                driver.Quit();
+            }
+        }
+    }
+}
